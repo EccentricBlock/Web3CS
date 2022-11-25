@@ -39,16 +39,27 @@ Endpoint Version: 'Geth/v1.9.10-stable/linux-amd64/go1.17.7'
 
 
 
-#### Key Technologies Used
+## Key Technologies Used
 The following core technolgies are used.
+
+**Web3 Class**
+
+This is just a front-end class that follows the facade pattern, this is where data validation and processing will take place.  The goal is to provide a single unified, strongly typed interface to users.  This class will pull all the strings underneath.
+
 
 **Microsoft StreamJsonRpc**
 https://github.com/microsoft/vs-streamjsonrpc
 
 The library utilises this JSON-RPC package extensively to interpret the JSON-RPC protocol.  However, there are subtle differences within the implementaion of EVM/ETH JSON-RPC than its standard/compliant version.  As such, some protocol/parsing modifications were made:
 
-Message Handling
+*Message Handling*
+
 All EVM JSON-RPC requests are sent to the root `/` path, this breaks URI's and the default behaviour of a number of things.  As such this [Message Handler Class](MessageHandler/EVMMessageHandler.cs) was written.  The gist is a `HttpClient` making a `POST` request to `/` within the `WriteAsync` method, the response is then queued up and the `ReadAsync` method then pops the info from the queue and parses the data.  class was heavily inspired from [HttpClientMessageHandler](https://github.com/microsoft/vs-streamjsonrpc/blob/main/doc/extensibility.md).
+
+*EVM RPC Implementation*
+
+The protocol uses StreamJsonRpc's strongly typed implementation method, the EVM implementation can be found [within this class](Protocol/IEVMProtocol.cs).
+
 
 **Nethereum.Hex**
 https://github.com/Nethereum/Nethereum/tree/master/src/Nethereum.Hex
