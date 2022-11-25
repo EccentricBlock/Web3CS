@@ -54,11 +54,11 @@ The library utilises this JSON-RPC package extensively to interpret the JSON-RPC
 
 *Message Handling*
 
-All EVM JSON-RPC requests are sent to the root `/` path, this breaks URI's and the default behaviour of a number of things.  As such this [Message Handler Class](blob/main/Web3CS/MessageHandler/EVMMessageHandler.cs) was written.  The gist is a `HttpClient` making a `POST` request to `/` within the `WriteAsync` method, the response is then queued up and the `ReadAsync` method then pops the info from the queue and parses the data.  class was heavily inspired from [HttpClientMessageHandler](https://github.com/microsoft/vs-streamjsonrpc/blob/main/doc/extensibility.md).
+All EVM JSON-RPC requests are sent to the root `/` path, this breaks URI's and the default behaviour of a number of things.  As such this [Message Handler Class](Web3CS/MessageHandler/EVMMessageHandler.cs) was written.  The gist is a `HttpClient` making a `POST` request to `/` within the `WriteAsync` method, the response is then queued up and the `ReadAsync` method then pops the info from the queue and parses the data.  class was heavily inspired from [HttpClientMessageHandler](https://github.com/microsoft/vs-streamjsonrpc/blob/main/doc/extensibility.md).
 
 *EVM RPC Implementation*
 
-The protocol uses StreamJsonRpc's strongly typed implementation method, the EVM implementation can be found [within this class](blob/main/Web3CS/Protocol/IEVMProtocol.cs).
+The protocol uses StreamJsonRpc's strongly typed implementation method, the EVM implementation can be found [within this class](Web3CS/Protocol/IEVMProtocol.cs).
 
 
 **Nethereum.Hex**
