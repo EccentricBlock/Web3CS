@@ -56,9 +56,9 @@ Console.WriteLine($"\t+ Current Block: '{latestBlock}'");
 Console.WriteLine($"\t+ TX Count: '{await web3Client.GetTransactionCountByNumberAsync(latestBlock)}'");
 Console.WriteLine($"\t+ Uncle Count: '{await web3Client.GetUncleCountByBlockNumberAsync(latestBlock)}'");
 
-need to write POC and test the method below.
+//need to write POC and test the method below.
 
-L2_GetBlockRangeAsync
+//L2_GetBlockRangeAsync
 
 
 
