@@ -7,6 +7,7 @@ using System.Text;
 using Web3CS.Enums;
 using Web3CS.MessageHandler;
 using Web3CS.Protocol.EVM;
+using Web3CS.Protocol.EVM.RPCObjects;
 using Web3CS.Utils;
 
 namespace Web3CS
@@ -307,12 +308,38 @@ namespace Web3CS
         }
 
 
+        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(EVMDefaultBlockParams startingBlockTag, EVMDefaultBlockParams lastBlockTag, bool returnHashOnly = true)
+        {
+            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockTag.ToRPCString(), lastBlockTag.ToRPCString(), returnHashOnly).ConfigureAwait(false);
+        }
+
+        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(HexBigInteger startingBlockNumber, EVMDefaultBlockParams lastBlockTag, bool returnHashOnly = true)
+        {
+            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockNumber.HexValue, lastBlockTag.ToRPCString(), returnHashOnly).ConfigureAwait(false);
+        }
+
+        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(HexBigInteger startingBlockNumber, HexBigInteger lastBlockNumber, bool returnHashOnly = true)
+        {
+            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockNumber.HexValue, lastBlockNumber.HexValue, returnHashOnly).ConfigureAwait(false);
+        }
+
+        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(EVMDefaultBlockParams startingBlockTag, HexBigInteger lastBlockNumber, bool returnHashOnly = true)
+        {
+            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockTag.ToRPCString(), lastBlockNumber.HexValue, returnHashOnly).ConfigureAwait(false);
+        }
 
 
+        public async Task<OPL2RollupInfo> L2_GetRollupInfoAsync()
+        {
+            return await evmProtocol.L2_GetRollupInfoAsync().ConfigureAwait(false);
+        }
 
-
-
+        public async Task<OPL2RollupGASPrices> L2_GASPricesAsync()
+        {
+            return await evmProtocol.L2_GASPricesAsync().ConfigureAwait(false);
+        }
         
+
         public void Dispose()
         {
 

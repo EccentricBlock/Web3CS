@@ -58,7 +58,7 @@ All EVM JSON-RPC requests are sent to the root `/` path, this breaks URI's and t
 
 *EVM RPC Implementation*
 
-The protocol uses StreamJsonRpc's strongly typed implementation method, the EVM implementation can be found [within this class](Web3CS/Protocol/IEVMProtocol.cs).
+The protocol uses StreamJsonRpc's strongly typed implementation method, the EVM implementation can be found [within this class](Web3CS/Protocol/EVM/IEVMProtocol.cs).
 
 
 **Nethereum.Hex**

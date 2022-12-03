@@ -247,5 +247,18 @@ namespace Web3CS.Protocol.EVM
         Task<EVMBlock[]> L2_GetBlockRangeAsync(string startingBlockOrTag, string FinishingBlockOrTag, bool returnHashOnly = true);
 
 
+
+        /// <summary>
+        /// Get L2-specific Info About Target Node
+        /// https://community.optimism.io/docs/developers/build/json-rpc/#rollup-getinfo
+        /// </summary>
+        /// <returns></returns>
+        [JsonRpcMethod("rollup_getInfo")]
+        Task<OPL2RollupInfo> L2_GetRollupInfoAsync();
+
+        
+        
+        [JsonRpcMethod("rollup_gasPrices")]
+        Task<OPL2RollupGASPrices> L2_GASPricesAsync();
     }
 }

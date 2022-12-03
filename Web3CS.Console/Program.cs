@@ -1,6 +1,7 @@
 ﻿using Nethereum.Hex.HexTypes;
 using Web3CS;
 using Web3CS.Enums;
+using Web3CS.Protocol.EVM.RPCObjects;
 
 Console.WriteLine("Hello, World!");
 
@@ -30,6 +31,19 @@ foreach(string account in accounts)
     Console.WriteLine($"\t\t- {account} [Bal: {await web3Client.GetBalanceAsync(account, latestBlock)} WEI, TX Count {await web3Client.GetTransactionCountAsync(account, latestBlock)}]");
 }
 
+/*
+ * 
+ METIS Nodes Do Not Support This RPC Method
+Console.WriteLine($"\t= L2 Specific:");
+
+OPL2RollupInfo rollupInfo = await web3Client.L2_GetRollupInfoAsync();
+
+Console.WriteLine($"\t\t+ Operation Mode: '{rollupInfo.mode}'");
+Console.WriteLine($"\t\t+ Syncing: '{rollupInfo.syncing}'");
+*/
+
+Console.WriteLine($"General/Utility Information:");
+
 
 Console.WriteLine($"");
 Console.WriteLine($"General/Utility Information:");
@@ -46,7 +60,15 @@ Console.WriteLine($"Network Information:");
 Console.WriteLine($"\t+ Network ID: '{await web3Client.GetNetworkIDAsync()}'");
 Console.WriteLine($"\t+ Gas Price: '{await web3Client.GetGasPriceAsync()}' Wei");
 
+/*
+ * 
+ METIS Nodes Do Not Support This RPC Method
+Console.WriteLine($"\t= L2 Specific:");
 
+OPL2RollupGASPrices rollupGASPrices = await web3Client.L2_GASPricesAsync();
+
+Console.WriteLine($"\t\t+ L1 GAS: '{rollupGASPrices.l1GasPrice}', L2 GAS: '{rollupGASPrices.l2GasPrice}'");
+*/
 
 
 
@@ -55,6 +77,15 @@ Console.WriteLine($"Block Information:");
 Console.WriteLine($"\t+ Current Block: '{latestBlock}'");
 Console.WriteLine($"\t+ TX Count: '{await web3Client.GetTransactionCountByNumberAsync(latestBlock)}'");
 Console.WriteLine($"\t+ Uncle Count: '{await web3Client.GetUncleCountByBlockNumberAsync(latestBlock)}'");
+Console.WriteLine($"\t= L2 Specific:");
+
+EVMBlock[] blocks = await web3Client.L2_GetBlockRangeAsync(new HexBigInteger(latestBlock.Value - 2), latestBlock, false);
+
+Console.WriteLine($"\t\t+ Get Block Range - Latest: {latestBlock}, Range: {latestBlock}-{new HexBigInteger(latestBlock.Value - 2)} (Last 3 Blocks)");
+foreach(EVMBlock block in blocks)
+{
+    Console.WriteLine($"\t\t\t - Block: '{new HexBigInteger(block.number).Value}', Tx Count:'{block.transactions.Length}', GAS Used:'{block.gasUsed}' Hash: '{block.hash.Substring(0,12)}...'");
+}//foreach(EVMBlock block in blocks)
 
 //need to write POC and test the method below.
 
