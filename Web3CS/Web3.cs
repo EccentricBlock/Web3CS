@@ -1,11 +1,12 @@
 ﻿using Nethereum.Hex.HexTypes;
+using Newtonsoft.Json.Linq;
 using StreamJsonRpc;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
 using Web3CS.Enums;
 using Web3CS.MessageHandler;
-using Web3CS.Protocol;
+using Web3CS.Protocol.EVM;
 using Web3CS.Utils;
 
 namespace Web3CS
@@ -232,7 +233,7 @@ namespace Web3CS
 
         public async Task<HexBigInteger> GetBalanceAsync(string address, HexBigInteger blockNumber)
         {
-            return await evmProtocol.GetBalanceAsync(address, blockNumber).ConfigureAwait(false);
+            return await evmProtocol.GetBalanceAsync(address, blockNumber.HexValue).ConfigureAwait(false);
         }
 
         public async Task<HexBigInteger> GetBalanceAsync(string address, EVMDefaultBlockParams defaultBlockParamerer)
@@ -273,7 +274,45 @@ namespace Web3CS
             return await evmProtocol.GetTransactionCountByNumberAsync(defaultBlockParamerer.ToRPCString()).ConfigureAwait(false);
         }
 
+        public async Task<HexBigInteger> GetTransactionCountByNumberAsync(HexBigInteger blockNumber)
+        {
+            return await evmProtocol.GetTransactionCountByNumberAsync(blockNumber.HexValue).ConfigureAwait(false);
+        }
 
+        public async Task<HexBigInteger> GetUncleCountByBlockHashAsync(string blockHash)
+        {
+            return await evmProtocol.GetUncleCountByBlockHashAsync(blockHash).ConfigureAwait(false);
+        }
+
+
+        public async Task<HexBigInteger> GetUncleCountByBlockNumberAsync(EVMDefaultBlockParams defaultBlockParamerer)
+        {
+            return await evmProtocol.GetUncleCountByBlockNumberAsync(defaultBlockParamerer.ToRPCString()).ConfigureAwait(false);
+        }
+
+        public async Task<HexBigInteger> GetUncleCountByBlockNumberAsync(HexBigInteger blockNumber)
+        {
+            return await evmProtocol.GetUncleCountByBlockNumberAsync(blockNumber.HexValue).ConfigureAwait(false);
+        }
+
+        public async Task<string> GetCodeAsync(string address, EVMDefaultBlockParams defaultBlockParamerer)
+        {
+            return await evmProtocol.GetCodeAsync(address, defaultBlockParamerer.ToRPCString()).ConfigureAwait(false);
+        }
+
+        //https://bytemeta.vip/repo/ethereum-optimism/optimism/issues/1218
+        public async Task<string> SignMessageAsync(string address, string messageToSign)
+        {
+            return await evmProtocol.SignMessageAsync(address, $"0x{Convert.ToHexString(Encoding.UTF8.GetBytes(messageToSign))}").ConfigureAwait(false);
+        }
+
+
+
+
+
+
+
+        
         public void Dispose()
         {
 

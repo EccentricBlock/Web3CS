@@ -1,8 +1,12 @@
 ﻿using Nethereum.Hex.HexTypes;
 using StreamJsonRpc;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Net;
+using System.Transactions;
+using Web3CS.Protocol.EVM.RPCObjects;
 
-
-namespace Web3CS.Protocol
+namespace Web3CS.Protocol.EVM
 {
     public interface IEVMProtocol
     {
@@ -190,6 +194,58 @@ namespace Web3CS.Protocol
         /// <returns>TX Count</returns>
         [JsonRpcMethod("eth_getBlockTransactionCountByNumber")]
         Task<HexBigInteger> GetTransactionCountByNumberAsync(string defaultBlockParamerer);
+
+
+        /// <summary>
+        /// No. Uncles In A block 
+        /// https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getunclecountbyblockhash
+        /// </summary>
+        /// <returns>Number of Uncles In Block</returns>
+        [JsonRpcMethod("eth_getUncleCountByBlockHash")]
+        Task<HexBigInteger> GetUncleCountByBlockHashAsync(string blockHash);
+
+
+
+        /// <summary>
+        /// No. Uncles In A block 
+        /// https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getunclecountbyblocknumber
+        /// </summary>
+        /// <returns>Number of Uncles In Block</returns>
+        [JsonRpcMethod("eth_getUncleCountByBlockNumber")]
+        Task<HexBigInteger> GetUncleCountByBlockNumberAsync(string blockHashorTag);
+
+
+        /// <summary>
+        /// Returns a Contract Code For The Given Address
+        /// </summary>
+        /// <param name="address">Target Address</param>
+        /// <param name="defaultBlockParamerer">pending/latest/earliest</param>
+        /// <returns>Code</returns>
+        [JsonRpcMethod("eth_getCode")]
+        Task<string> GetCodeAsync(string address, string defaultBlockParamerer);
+
+
+        /// <summary>
+        /// Signs a Message Using Specified Address
+        /// </summary>
+        /// <param name="address">Target Address</param>
+        /// <param name="message">Message To Sign</param>
+        /// <returns>Signed Message</returns>
+        [JsonRpcMethod("eth_sign")]
+        Task<string> SignMessageAsync(string address, string message);
+
+
+        /// <summary>
+        /// Same As "eth_getBlockByNumber" (Optimism Based Addition)
+        /// https://community.optimism.io/docs/developers/build/json-rpc/#eth-getblockrange
+        /// </summary>
+        /// <param name="startingBlockOrTag">BlockNum or Tag (pending/latest/earliest)</param>
+        /// <param name="FinishingBlockOrTag">BlockNum or Tag (pending/latest/earliest)</param>
+        /// <param name="returnHashOnly">false returns full blocks like "eth_getBlockByHash"</param>
+        /// <returns>Array of Blocks (see eth_getblockbyhash)</returns>
+        [JsonRpcMethod("eth_getBlockRange")]
+        Task<EVMBlock[]> L2_GetBlockRangeAsync(string startingBlockOrTag, string FinishingBlockOrTag, bool returnHashOnly = true);
+
 
     }
 }
