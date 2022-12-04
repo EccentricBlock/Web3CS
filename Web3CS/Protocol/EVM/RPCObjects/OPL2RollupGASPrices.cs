@@ -6,5 +6,5 @@
     {
         public string l1GasPrice { get; set; }
         public string l2GasPrice { get; set; }
-    }
+    }//public class OPL2RollupGASPrices
 }

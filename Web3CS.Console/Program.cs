@@ -42,12 +42,13 @@ Console.WriteLine($"\t\t+ Operation Mode: '{rollupInfo.mode}'");
 Console.WriteLine($"\t\t+ Syncing: '{rollupInfo.syncing}'");
 */
 
-Console.WriteLine($"General/Utility Information:");
-
 
 Console.WriteLine($"");
 Console.WriteLine($"General/Utility Information:");
 Console.WriteLine($"\t+ Encode Keccak Data: '{await web3Client.GenerateKeccakStringAsync("0x68656c6c6f20776f726c64")}'");
+
+Console.WriteLine($"Sign Transaction:");       SignTransactionAsync
+
 
 //https://bytemeta.vip/repo/ethereum-optimism/optimism/issues/1218
 //testing this on Metis which is an Optimism L2 fork

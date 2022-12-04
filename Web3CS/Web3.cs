@@ -338,7 +338,14 @@ namespace Web3CS
         {
             return await evmProtocol.L2_GASPricesAsync().ConfigureAwait(false);
         }
-        
+
+        public async Task<string> SignTransactionAsync(string fromAddress, string toAddress, HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, HexBigInteger nonce, string data)
+        {
+            return await evmProtocol.SignTransactionAsync($"{{\"data\":\"{data}\",\"from\": \"{fromAddress}\",\"gas\": \"0x{gas.HexValue}\",\"gasPrice\": \"0x{gasPrice.HexValue}\",\"to\": \"{toAddress}\",\"value\": \"0x{value.HexValue}\"}}").ConfigureAwait(false);
+        }
+
+
+
 
         public void Dispose()
         {

@@ -217,6 +217,7 @@ namespace Web3CS.Protocol.EVM
 
         /// <summary>
         /// Returns a Contract Code For The Given Address
+        /// https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getcode
         /// </summary>
         /// <param name="address">Target Address</param>
         /// <param name="defaultBlockParamerer">pending/latest/earliest</param>
@@ -227,6 +228,7 @@ namespace Web3CS.Protocol.EVM
 
         /// <summary>
         /// Signs a Message Using Specified Address
+        /// https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_sign
         /// </summary>
         /// <param name="address">Target Address</param>
         /// <param name="message">Message To Sign</param>
@@ -256,9 +258,23 @@ namespace Web3CS.Protocol.EVM
         [JsonRpcMethod("rollup_getInfo")]
         Task<OPL2RollupInfo> L2_GetRollupInfoAsync();
 
-        
-        
+
+        /// <summary>
+        /// Returns L1 and L2 GAS Prices Being by the Sequencer.
+        /// https://community.optimism.io/docs/developers/build/json-rpc/#rollup-gasprices
+        /// </summary>
+        /// <returns></returns>
         [JsonRpcMethod("rollup_gasPrices")]
         Task<OPL2RollupGASPrices> L2_GASPricesAsync();
+
+
+        /// <summary>
+        /// Sign TX To Broadcast Later
+        /// https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_signtransaction
+        /// </summary>
+        /// <param name="txObject">TX Data</param>
+        /// <returns></returns>
+        [JsonRpcMethod("eth_signTransaction")]
+        Task<string> SignTransactionAsync(string txObject);
     }
 }
