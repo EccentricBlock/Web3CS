@@ -14,15 +14,3 @@
     }
 }
 
-public class Rootobject
-{
-    public int id { get; set; }
-    public string jsonrpc { get; set; }
-    public string method { get; set; }
-    public Param[] _params { get; set; }
-}
-
-public class Param
-{
-
-}
