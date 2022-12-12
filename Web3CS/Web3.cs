@@ -4,6 +4,7 @@ using StreamJsonRpc;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using Web3CS.Enums;
 using Web3CS.MessageHandler;
 using Web3CS.Protocol.EVM;
@@ -339,9 +340,14 @@ namespace Web3CS
             return await evmProtocol.L2_GASPricesAsync().ConfigureAwait(false);
         }
 
-        public async Task<string> SignTransactionAsync(string fromAddress, string toAddress, HexBigInteger gas, HexBigInteger gasPrice, HexBigInteger value, HexBigInteger nonce, string data)
+        //todo: 
+        public async Task<string> SignTransactionAsync(string fromAddress, string toAddress, HexBigInteger gasToUse, HexBigInteger targetGasPrice, HexBigInteger txValue, HexBigInteger txNonce, string txData)
         {
-            return await evmProtocol.SignTransactionAsync($"[{{\"data\":\"{data}\",\"from\": \"{fromAddress}\",\"gas\": \"{gas.HexValue}\",\"gasPrice\": \"{gasPrice.HexValue}\",\"to\": \"{toAddress}\",\"value\": \"{value.HexValue}\"}}]").ConfigureAwait(false);
+            SendTransactionData[] data = new SendTransactionData[] { new SendTransactionData { from = fromAddress, to = toAddress, gas = gasToUse.HexValue, gasPrice = targetGasPrice.HexValue, data = txData, value = txValue.HexValue, nonce = txNonce.HexValue } };
+
+            string jsonSring = JsonSerializer.Serialize(data);
+
+            return await evmProtocol.SignTransactionAsync(jsonSring).ConfigureAwait(false);
         }
 
 
