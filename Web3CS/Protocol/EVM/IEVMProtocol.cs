@@ -1,14 +1,10 @@
 ﻿using Nethereum.Hex.HexTypes;
 using StreamJsonRpc;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Net;
-using System.Transactions;
-using Web3CS.Protocol.EVM.RPCObjects;
+
 
 namespace Web3CS.Protocol.EVM
 {
-    public interface IEVMProtocol
+    public interface IEVMProtocol: IOptimisticProtocol
     {
         /// <summary>
         /// Get Remote Version of Node
@@ -235,37 +231,6 @@ namespace Web3CS.Protocol.EVM
         /// <returns>Signed Message</returns>
         [JsonRpcMethod("eth_sign")]
         Task<string> SignMessageAsync(string address, string message);
-
-
-        /// <summary>
-        /// Same As "eth_getBlockByNumber" (Optimism Based Addition)
-        /// https://community.optimism.io/docs/developers/build/json-rpc/#eth-getblockrange
-        /// </summary>
-        /// <param name="startingBlockOrTag">BlockNum or Tag (pending/latest/earliest)</param>
-        /// <param name="FinishingBlockOrTag">BlockNum or Tag (pending/latest/earliest)</param>
-        /// <param name="returnHashOnly">false returns full blocks like "eth_getBlockByHash"</param>
-        /// <returns>Array of Blocks (see eth_getblockbyhash)</returns>
-        [JsonRpcMethod("eth_getBlockRange")]
-        Task<EVMBlock[]> L2_GetBlockRangeAsync(string startingBlockOrTag, string FinishingBlockOrTag, bool returnHashOnly = true);
-
-
-
-        /// <summary>
-        /// Get L2-specific Info About Target Node
-        /// https://community.optimism.io/docs/developers/build/json-rpc/#rollup-getinfo
-        /// </summary>
-        /// <returns></returns>
-        [JsonRpcMethod("rollup_getInfo")]
-        Task<OPL2RollupInfo> L2_GetRollupInfoAsync();
-
-
-        /// <summary>
-        /// Returns L1 and L2 GAS Prices Being by the Sequencer.
-        /// https://community.optimism.io/docs/developers/build/json-rpc/#rollup-gasprices
-        /// </summary>
-        /// <returns></returns>
-        [JsonRpcMethod("rollup_gasPrices")]
-        Task<OPL2RollupGASPrices> L2_GASPricesAsync();
 
 
         /// <summary>
