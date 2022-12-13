@@ -1,5 +1,6 @@
 ﻿using Nethereum.Hex.HexTypes;
 using Web3CS;
+using Web3CS.Console;
 using Web3CS.Enums;
 using Web3CS.Protocol.EVM.RPCObjects;
 
@@ -84,19 +85,24 @@ Console.WriteLine($"\t+ TX Count: '{await web3Client.GetTransactionCountByNumber
 Console.WriteLine($"\t+ Uncle Count: '{await web3Client.GetUncleCountByBlockNumberAsync(latestBlock)}'");
 Console.WriteLine($"\t= L2 Specific:");
 
-EVMBlock[] blocks = await web3Client.L2_GetBlockRangeAsync(new HexBigInteger(latestBlock.Value - 2), latestBlock, false);
+EVMBlock<EVMBlockTransaction>[] blocks = await web3Client.L2_GetBlockRangeAsync(new HexBigInteger(latestBlock.Value - 2), latestBlock, false);
 
 Console.WriteLine($"\t\t+ Get Block Range - Latest: {latestBlock}, Range: {latestBlock}-{new HexBigInteger(latestBlock.Value - 2)} (Last 3 Blocks)");
 foreach(EVMBlock block in blocks)
 {
-    Console.WriteLine($"\t\t\t - Block: '{new HexBigInteger(block.number).Value}', Tx Count:'{block.transactions.Length}', GAS Used:'{block.gasUsed}' Hash: '{block.hash.Substring(0,12)}...'");
+    Console.WriteLine($"\t\t\t - Block: '{new HexBigInteger(block.number).Value}', Tx Count:'{block.transactions.Length}', GAS Used:'{block.gasUsed}' Hash: '{block.hash.Shorten()}'");
 }//foreach(EVMBlock block in blocks)
 
-//need to write POC and test the method below.
 
-//L2_GetBlockRangeAsync
+Console.WriteLine($"\t= L1 Specific:");
 
+EVMBlock<EVMBlockTransaction> latestBlockData = await web3Client.GetBlockByNumberAsync(EVMDefaultBlockParams.Latest, false);
+Console.WriteLine($"\t\t - Block: '{new HexBigInteger(latestBlockData.number).Value}', Tx Count:'{latestBlockData.transactions.Length}', GAS Used:'{latestBlockData.gasUsed}' Hash: '{latestBlockData.hash.Shorten()}'");
 
+foreach(EVMBlockTransaction tx in latestBlockData.transactions)
+{
+    Console.WriteLine($"\t\t\t - TX: From: '{tx.from.Shorten()}', To:'{tx.to.Shorten()}', Nonce:'{tx.nonce}', Input: '{tx.input.Shorten()}' Hash: '{tx.hash.Shorten()}'");
+}//foreach(EVMBlock block in blocks)
 
 
 Console.WriteLine($"");

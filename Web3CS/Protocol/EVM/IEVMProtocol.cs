@@ -1,6 +1,6 @@
 ﻿using Nethereum.Hex.HexTypes;
 using StreamJsonRpc;
-
+using Web3CS.Protocol.EVM.RPCObjects;
 
 namespace Web3CS.Protocol.EVM
 {
@@ -241,5 +241,28 @@ namespace Web3CS.Protocol.EVM
         /// <returns></returns>
         [JsonRpcMethod("eth_signTransaction")]
         Task<string> SignTransactionAsync(string txObject);
+
+
+
+
+        /// <summary>
+        ///  Bet Block Info By Number (TX list is hashes only)
+        ///  https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getblockbynumber
+        /// </summary>
+        /// <param name="blockHashorTag">hex block num/pending/latest/earliest</param>
+        /// <param name="hashOnly">Hash Only or Full Object?</param>
+        /// <returns>EVM Block Info</returns>
+        [JsonRpcMethod("eth_getBlockByNumber")]
+        Task<EVMBlock<string>> GetBlockByNumberWithHashesAsync(string blockHashorTag, bool hashOnly);
+
+        /// <summary>
+        ///  Bet Block Info By Number (TX list is complete object)
+        ///  https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_getblockbynumber
+        /// </summary>
+        /// <param name="blockHashorTag">hex block num/pending/latest/earliest</param>
+        /// <param name="hashOnly">Hash Only or Full Object?</param>
+        /// <returns>EVM Block Info</returns>
+        [JsonRpcMethod("eth_getBlockByNumber")]
+        Task<EVMBlock<EVMBlockTransaction>> GetBlockByNumberWithFullTXAsync(string blockHashorTag, bool hashOnly);
     }
 }

@@ -13,7 +13,7 @@ using Web3CS.Utils;
 
 namespace Web3CS
 {
-    public class Web3 : Traceable, IDisposable
+    public partial class Web3 : Traceable, IDisposable
     {
 
 
@@ -302,43 +302,12 @@ namespace Web3CS
             return await evmProtocol.GetCodeAsync(address, defaultBlockParamerer.ToRPCString()).ConfigureAwait(false);
         }
 
-        //https://bytemeta.vip/repo/ethereum-optimism/optimism/issues/1218
+
         public async Task<string> SignMessageAsync(string address, string messageToSign)
         {
             return await evmProtocol.SignMessageAsync(address, $"0x{Convert.ToHexString(Encoding.UTF8.GetBytes(messageToSign))}").ConfigureAwait(false);
         }
 
-
-        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(EVMDefaultBlockParams startingBlockTag, EVMDefaultBlockParams lastBlockTag, bool returnHashOnly = true)
-        {
-            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockTag.ToRPCString(), lastBlockTag.ToRPCString(), returnHashOnly).ConfigureAwait(false);
-        }
-
-        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(HexBigInteger startingBlockNumber, EVMDefaultBlockParams lastBlockTag, bool returnHashOnly = true)
-        {
-            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockNumber.HexValue, lastBlockTag.ToRPCString(), returnHashOnly).ConfigureAwait(false);
-        }
-
-        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(HexBigInteger startingBlockNumber, HexBigInteger lastBlockNumber, bool returnHashOnly = true)
-        {
-            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockNumber.HexValue, lastBlockNumber.HexValue, returnHashOnly).ConfigureAwait(false);
-        }
-
-        public async Task<EVMBlock[]> L2_GetBlockRangeAsync(EVMDefaultBlockParams startingBlockTag, HexBigInteger lastBlockNumber, bool returnHashOnly = true)
-        {
-            return await evmProtocol.L2_GetBlockRangeAsync(startingBlockTag.ToRPCString(), lastBlockNumber.HexValue, returnHashOnly).ConfigureAwait(false);
-        }
-
-
-        public async Task<OPL2RollupInfo> L2_GetRollupInfoAsync()
-        {
-            return await evmProtocol.L2_GetRollupInfoAsync().ConfigureAwait(false);
-        }
-
-        public async Task<OPL2RollupGASPrices> L2_GASPricesAsync()
-        {
-            return await evmProtocol.L2_GASPricesAsync().ConfigureAwait(false);
-        }
 
         //todo: 
         public async Task<string> SignTransactionAsync(string fromAddress, string toAddress, HexBigInteger gasToUse, HexBigInteger targetGasPrice, HexBigInteger txValue, HexBigInteger txNonce, string txData)
@@ -351,6 +320,14 @@ namespace Web3CS
         }
 
 
+        public async Task<EVMBlock<EVMBlockTransaction>> GetBlockByNumberAsync(EVMDefaultBlockParams defaultBlockParamerer, bool hashOnly)
+        {
+            if(!hashOnly) { return await evmProtocol.GetBlockByNumberWithFullTXAsync(defaultBlockParamerer.ToRPCString(), !hashOnly).ConfigureAwait(false); }
+
+            EVMBlock<string> initialData = await evmProtocol.GetBlockByNumberWithHashesAsync(defaultBlockParamerer.ToRPCString(), !hashOnly).ConfigureAwait(false);
+
+            return initialData.ConvertToFullObject();
+        }//public async Task<EVMBlock<EVMBlockTransaction>> GetBlockByNumberAsync(EVMDefaultBlockParams defaultBlockParamerer, bool hashOnly)
 
         public void Dispose()
         {
